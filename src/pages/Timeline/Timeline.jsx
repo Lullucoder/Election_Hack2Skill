@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { VOTER_JOURNEY_STEPS } from '../../data/mockData';
+import Icon from '../../components/Icons/IconResolver';
+import { ChevronDown, Check, RotateCcw } from 'lucide-react';
 import './Timeline.css';
 
 const STATUS_COLORS = {
@@ -32,10 +34,12 @@ export default function Timeline() {
       <div className="container-sm">
         {/* Header */}
         <div className="timeline-header animate-fadeInUp">
-          <span className="badge badge-primary">🗺️ Interactive Guide</span>
-          <h1 className="heading-2">Your Voter Journey</h1>
+          <span className="badge badge-primary">
+            <Icon name="journey" size={14} /> Interactive Guide
+          </span>
+          <h1 className="heading-2">Your Indian Voter Journey</h1>
           <p className="timeline-description">
-            Follow each step from eligibility to election results. Click any step to learn more, 
+            Follow each step from ECI eligibility to election results. Click any step to learn more, 
             and mark steps as complete as you progress through your voter journey.
           </p>
           <div className="timeline-progress">
@@ -75,7 +79,7 @@ export default function Timeline() {
                     boxShadow: `0 0 15px ${isCompleted ? 'rgba(16, 185, 129, 0.4)' : colors.border}`
                   }}
                 >
-                  {isCompleted ? '✓' : step.id}
+                  {isCompleted ? <Check size={16} strokeWidth={3} /> : step.id}
                 </div>
 
                 {/* Card */}
@@ -86,14 +90,14 @@ export default function Timeline() {
                 >
                   <div className="timeline-card-header">
                     <div className="timeline-card-icon" style={{ background: colors.bg, color: colors.color }}>
-                      {step.icon}
+                      <Icon name={step.iconKey} size={24} />
                     </div>
                     <div className="timeline-card-info">
                       <h3>{step.title}</h3>
                       <p>{step.description}</p>
                     </div>
                     <span className={`timeline-expand-icon ${isExpanded ? 'rotated' : ''}`}>
-                      ▼
+                      <ChevronDown size={24} />
                     </span>
                   </div>
 
@@ -111,7 +115,11 @@ export default function Timeline() {
                         className={`btn ${isCompleted ? 'btn-outline' : 'btn-primary'} btn-sm timeline-complete-btn`}
                         onClick={(e) => markComplete(step.id, e)}
                       >
-                        {isCompleted ? '↩ Mark Incomplete' : '✓ Mark as Complete'}
+                        {isCompleted ? (
+                          <><RotateCcw size={16} /> Mark Incomplete</>
+                        ) : (
+                          <><Check size={16} /> Mark as Complete</>
+                        )}
                       </button>
                     </div>
                   )}
@@ -123,7 +131,9 @@ export default function Timeline() {
 
         {completedCount === VOTER_JOURNEY_STEPS.length && (
           <div className="timeline-congrats glass-card animate-fadeInUp">
-            <h2>🎉 Journey Complete!</h2>
+            <h2 style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+              <Icon name="sparkles" size={28} color="#f59e0b" /> Journey Complete!
+            </h2>
             <p>You've explored every step of the voter journey! You've earned the <strong>"Journey Explorer"</strong> badge.</p>
           </div>
         )}

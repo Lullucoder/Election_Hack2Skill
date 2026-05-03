@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { VOTER_CHECKLIST, BADGES, MOCK_NOTIFICATIONS } from '../../data/mockData';
+import Icon from '../../components/Icons/IconResolver';
+import { ArrowRight, Trophy } from 'lucide-react';
 import './Dashboard.css';
 
 export default function Dashboard() {
@@ -31,15 +33,15 @@ export default function Dashboard() {
         <div className="dashboard-header animate-fadeInUp">
           <div className="dashboard-welcome">
             <h1 className="heading-2">
-              Welcome back, <span className="text-gradient">{user?.displayName || 'Voter'}</span>! 👋
+              Welcome back, <span className="text-gradient">{user?.displayName || 'Citizen'}</span>!
             </h1>
             <p className="dashboard-subtitle">
               Continue your election education journey. You're making great progress!
             </p>
           </div>
           <div className="dashboard-notifications">
-            <Link to="/notifications" className="btn btn-outline btn-icon notification-btn" id="dashboard-notifications">
-              🔔
+            <Link to="/notifications" className="btn btn-outline btn-icon notification-btn" id="dashboard-notifications" aria-label="Notifications">
+              <Icon name="notification" size={20} />
               {unreadNotifications > 0 && (
                 <span className="notification-badge">{unreadNotifications}</span>
               )}
@@ -50,7 +52,9 @@ export default function Dashboard() {
         {/* Quick Stats */}
         <div className="dashboard-stats stagger-children">
           <div className="stat-card glass-card" id="stat-progress">
-            <div className="stat-icon" style={{ background: 'rgba(99, 102, 241, 0.15)', color: '#818cf8' }}>📊</div>
+            <div className="stat-icon" style={{ background: 'rgba(99, 102, 241, 0.15)', color: '#818cf8' }}>
+              <Icon name="stats" size={24} />
+            </div>
             <div className="stat-info">
               <span className="stat-value">{progressPercent}%</span>
               <span className="stat-label">Checklist Complete</span>
@@ -61,7 +65,9 @@ export default function Dashboard() {
           </div>
 
           <div className="stat-card glass-card" id="stat-badges">
-            <div className="stat-icon" style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#fbbf24' }}>🏆</div>
+            <div className="stat-icon" style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#fbbf24' }}>
+              <Icon name="badge" size={24} />
+            </div>
             <div className="stat-info">
               <span className="stat-value">{earnedBadges.length}/{BADGES.length}</span>
               <span className="stat-label">Badges Earned</span>
@@ -69,10 +75,12 @@ export default function Dashboard() {
           </div>
 
           <div className="stat-card glass-card" id="stat-state">
-            <div className="stat-icon" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#34d399' }}>📍</div>
+            <div className="stat-icon" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#34d399' }}>
+              <Icon name="location" size={24} />
+            </div>
             <div className="stat-info">
               <span className="stat-value">{user?.state || 'Not Set'}</span>
-              <span className="stat-label">Your State</span>
+              <span className="stat-label">Your State/UT</span>
             </div>
           </div>
         </div>
@@ -80,39 +88,47 @@ export default function Dashboard() {
         {/* Quick Actions */}
         <div className="dashboard-actions stagger-children">
           <Link to="/timeline" className="action-card glass-card" id="action-timeline">
-            <div className="action-icon">🗺️</div>
+            <div className="action-icon">
+              <Icon name="journey" size={24} />
+            </div>
             <div className="action-content">
               <h3>Voter Journey</h3>
-              <p>Follow the step-by-step election process</p>
+              <p>Follow the Indian election process</p>
             </div>
-            <span className="action-arrow">→</span>
+            <ArrowRight size={20} className="action-arrow" />
           </Link>
 
           <Link to="/assistant" className="action-card glass-card" id="action-assistant">
-            <div className="action-icon">🤖</div>
+            <div className="action-icon">
+              <Icon name="assistant" size={24} />
+            </div>
             <div className="action-content">
               <h3>AI Assistant</h3>
-              <p>Ask any question about elections</p>
+              <p>Ask questions about voting</p>
             </div>
-            <span className="action-arrow">→</span>
+            <ArrowRight size={20} className="action-arrow" />
           </Link>
 
           <Link to="/quiz" className="action-card glass-card" id="action-quiz">
-            <div className="action-icon">🧠</div>
+            <div className="action-icon">
+              <Icon name="quiz" size={24} />
+            </div>
             <div className="action-content">
               <h3>Knowledge Quiz</h3>
               <p>Test your election knowledge</p>
             </div>
-            <span className="action-arrow">→</span>
+            <ArrowRight size={20} className="action-arrow" />
           </Link>
 
           <Link to="/notifications" className="action-card glass-card" id="action-notifications">
-            <div className="action-icon">🔔</div>
+            <div className="action-icon">
+              <Icon name="notification" size={24} />
+            </div>
             <div className="action-content">
               <h3>Notifications</h3>
               <p>{unreadNotifications} unread alerts</p>
             </div>
-            <span className="action-arrow">→</span>
+            <ArrowRight size={20} className="action-arrow" />
           </Link>
         </div>
 
@@ -121,7 +137,9 @@ export default function Dashboard() {
           {/* Checklist */}
           <div className="dashboard-checklist glass-card animate-fadeInUp" id="dashboard-checklist">
             <div className="section-title-row">
-              <h2 className="heading-3">✅ Are You Vote Ready?</h2>
+              <h2 className="heading-3">
+                <Icon name="check" size={24} className="inline-icon" /> Are You Vote Ready?
+              </h2>
               <span className="badge badge-primary">{completedCount}/{totalChecklist}</span>
             </div>
 
@@ -139,7 +157,7 @@ export default function Dashboard() {
                     onChange={() => toggleCheck(item.id)}
                     className="checklist-checkbox"
                   />
-                  <span className="checklist-icon">{item.icon}</span>
+                  <span className="checklist-icon"><Icon name={item.iconKey} size={18} /></span>
                   <span className="checklist-label">{item.label}</span>
                 </label>
               ))}
@@ -147,14 +165,16 @@ export default function Dashboard() {
 
             {completedCount === totalChecklist && (
               <div className="checklist-complete-msg animate-scaleIn">
-                🎉 Congratulations! You're vote ready! You've earned the <strong>"Vote Ready"</strong> badge!
+                <Trophy size={20} className="inline-icon" style={{ color: '#fbbf24' }} /> Congratulations! You're vote ready! You've earned the <strong>"Vote Ready"</strong> badge!
               </div>
             )}
           </div>
 
           {/* Badges */}
           <div className="dashboard-badges glass-card animate-fadeInUp" id="dashboard-badges">
-            <h2 className="heading-3">🏆 Your Badges</h2>
+            <h2 className="heading-3">
+              <Trophy size={24} className="inline-icon" /> Your Badges
+            </h2>
             <div className="badges-grid">
               {BADGES.map(badge => {
                 const isEarned = earnedBadges.includes(badge.id);
@@ -165,11 +185,11 @@ export default function Dashboard() {
                     id={`badge-${badge.id}`}
                   >
                     <div className="badge-icon-wrapper" style={isEarned ? { borderColor: badge.color, boxShadow: `0 0 15px ${badge.color}30` } : {}}>
-                      <span className="badge-emoji">{badge.icon}</span>
+                      <Icon name={badge.iconKey} size={28} color={isEarned ? badge.color : undefined} className="badge-svg" />
                     </div>
                     <span className="badge-name">{badge.name}</span>
                     <span className="badge-desc">{isEarned ? badge.description : badge.requirement}</span>
-                    {!isEarned && <span className="badge-lock">🔒</span>}
+                    {!isEarned && <span className="badge-lock"><Icon name="lock" size={14} /></span>}
                   </div>
                 );
               })}

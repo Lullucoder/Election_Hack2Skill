@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { getAIResponse, SUGGESTED_QUESTIONS } from '../../services/aiService';
+import Icon from '../../components/Icons/IconResolver';
+import { Send, Loader2, Info } from 'lucide-react';
 import './Assistant.css';
 
 export default function Assistant() {
@@ -7,7 +9,7 @@ export default function Assistant() {
     {
       id: 1,
       role: 'assistant',
-      content: "Hello! 👋 I'm ElectionIQ, your friendly election education assistant. I'm here to help you understand the voting process, registration deadlines, and everything about participating in democracy.\n\nFeel free to ask me anything, or try one of the suggested questions below!",
+      content: "Namaste! I'm ElectionIQ, your AI-powered guide to understanding the Indian election process. I'm here to help you learn about voter registration (EPIC), EVMs, election timelines, and your rights as a voter.\n\nFeel free to ask me anything about Indian elections, or try one of the suggested questions below!",
       timestamp: new Date()
     }
   ]);
@@ -98,8 +100,10 @@ export default function Assistant() {
         {/* Sidebar */}
         <div className="assistant-sidebar glass-card">
           <div className="sidebar-header">
-            <h2>🤖 AI Assistant</h2>
-            <p>Ask me about elections!</p>
+            <h2 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <Icon name="assistant" size={24} /> AI Assistant
+            </h2>
+            <p>Ask me about Indian elections!</p>
           </div>
 
           <div className="sidebar-stats">
@@ -116,16 +120,19 @@ export default function Assistant() {
           <div className="sidebar-topics">
             <h3>Popular Topics</h3>
             <div className="topic-tags">
-              <span className="topic-tag" onClick={() => handleSuggestion('How do I register to vote?')}>Registration</span>
-              <span className="topic-tag" onClick={() => handleSuggestion('What are the voting methods?')}>Voting Methods</span>
-              <span className="topic-tag" onClick={() => handleSuggestion("What's the election timeline?")}>Timelines</span>
-              <span className="topic-tag" onClick={() => handleSuggestion('How are votes counted?')}>Vote Counting</span>
-              <span className="topic-tag" onClick={() => handleSuggestion('What ID do I need?')}>ID Requirements</span>
+              <span className="topic-tag" onClick={() => handleSuggestion('How do I get an EPIC card?')}>EPIC Registration</span>
+              <span className="topic-tag" onClick={() => handleSuggestion('How do EVMs and VVPAT work?')}>EVM & VVPAT</span>
+              <span className="topic-tag" onClick={() => handleSuggestion("What are the phases of election?")}>MCC & Phases</span>
+              <span className="topic-tag" onClick={() => handleSuggestion('What is NOTA?')}>NOTA Option</span>
+              <span className="topic-tag" onClick={() => handleSuggestion('Difference between Lok Sabha and Vidhan Sabha?')}>Election Types</span>
             </div>
           </div>
 
           <div className="sidebar-disclaimer">
-            <p>⚖️ <strong>Non-Partisan Notice:</strong> This assistant provides strictly educational, factual information about the democratic process. It does not endorse any candidate or party.</p>
+            <p style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+              <Info size={16} style={{ flexShrink: 0, marginTop: '2px' }} />
+              <span><strong>Non-Partisan Notice:</strong> This assistant provides strictly educational, factual information about the Indian democratic process. It does not endorse any candidate or party.</span>
+            </p>
           </div>
         </div>
 
@@ -133,7 +140,9 @@ export default function Assistant() {
         <div className="assistant-chat glass-card">
           <div className="chat-header">
             <div className="chat-header-info">
-              <div className="chat-avatar">🤖</div>
+              <div className="chat-avatar">
+                <Icon name="assistant" size={20} />
+              </div>
               <div>
                 <h3>ElectionIQ Assistant</h3>
                 <span className="chat-status">
@@ -148,7 +157,9 @@ export default function Assistant() {
             {messages.map(msg => (
               <div key={msg.id} className={`chat-message chat-message-${msg.role}`}>
                 {msg.role === 'assistant' && (
-                  <div className="chat-msg-avatar">🤖</div>
+                  <div className="chat-msg-avatar">
+                    <Icon name="assistant" size={16} />
+                  </div>
                 )}
                 <div className="chat-msg-bubble">
                   <div 
@@ -164,7 +175,9 @@ export default function Assistant() {
 
             {isTyping && (
               <div className="chat-message chat-message-assistant">
-                <div className="chat-msg-avatar">🤖</div>
+                <div className="chat-msg-avatar">
+                  <Icon name="assistant" size={16} />
+                </div>
                 <div className="chat-msg-bubble">
                   <div className="typing-indicator">
                     <span></span><span></span><span></span>
@@ -198,7 +211,7 @@ export default function Assistant() {
               ref={inputRef}
               type="text"
               className="chat-input"
-              placeholder="Ask me about elections..."
+              placeholder="Ask me about Indian elections..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               disabled={isTyping}
@@ -209,8 +222,9 @@ export default function Assistant() {
               className="btn btn-primary chat-send-btn" 
               disabled={!input.trim() || isTyping}
               id="chat-send"
+              aria-label="Send message"
             >
-              {isTyping ? '⏳' : '➤'}
+              {isTyping ? <Loader2 size={18} className="spin" /> : <Send size={18} />}
             </button>
           </form>
         </div>

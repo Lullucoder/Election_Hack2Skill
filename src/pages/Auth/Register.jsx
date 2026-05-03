@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { STATES } from '../../data/mockData';
+import { LogoIcon } from '../../components/Icons/Icons';
+import { Mail, Lock, User, MapPin, Loader2 } from 'lucide-react';
 import './Auth.css';
 
 export default function Register() {
@@ -16,25 +18,14 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters.');
-      return;
-    }
-    try {
-      await register(name, email, password);
-      navigate('/dashboard');
-    } catch (err) {
-      setError('Registration failed. Please try again.');
-    }
+    if (password.length < 6) { setError('Password must be at least 6 characters.'); return; }
+    try { await register(name, email, password); navigate('/dashboard'); }
+    catch { setError('Registration failed. Please try again.'); }
   };
 
   const handleGoogle = async () => {
-    try {
-      await loginWithGoogle();
-      navigate('/dashboard');
-    } catch (err) {
-      setError('Google sign-in failed.');
-    }
+    try { await loginWithGoogle(); navigate('/dashboard'); }
+    catch { setError('Google sign-in failed.'); }
   };
 
   return (
@@ -45,86 +36,61 @@ export default function Register() {
       <div className="auth-container animate-fadeInUp">
         <div className="auth-card glass-card">
           <div className="auth-header">
-            <Link to="/" className="auth-logo">
-              <span>🗳️</span>
+            <Link to="/" className="auth-logo" aria-label="Go to homepage">
+              <LogoIcon size={28} />
               <span className="logo-text">Election<span className="logo-accent">IQ</span></span>
             </Link>
             <h1 className="heading-3">Create Your Account</h1>
             <p className="auth-subtitle">Start your election education journey today</p>
           </div>
 
-          {error && <div className="auth-error">{error}</div>}
+          {error && <div className="auth-error" role="alert">{error}</div>}
 
-          <form onSubmit={handleSubmit} className="auth-form">
+          <form onSubmit={handleSubmit} className="auth-form" noValidate>
             <div className="input-group">
               <label className="input-label" htmlFor="register-name">Full Name</label>
-              <input
-                id="register-name"
-                type="text"
-                className="input-field"
-                placeholder="John Doe"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
+              <div className="input-with-icon">
+                <User size={16} className="input-icon" />
+                <input id="register-name" type="text" className="input-field input-field-icon" placeholder="Rahul Sharma" value={name} onChange={(e) => setName(e.target.value)} required aria-required="true" />
+              </div>
             </div>
 
             <div className="input-group">
               <label className="input-label" htmlFor="register-email">Email Address</label>
-              <input
-                id="register-email"
-                type="email"
-                className="input-field"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+              <div className="input-with-icon">
+                <Mail size={16} className="input-icon" />
+                <input id="register-email" type="email" className="input-field input-field-icon" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required aria-required="true" />
+              </div>
             </div>
 
             <div className="input-group">
               <label className="input-label" htmlFor="register-password">Password</label>
-              <input
-                id="register-password"
-                type="password"
-                className="input-field"
-                placeholder="Minimum 6 characters"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <div className="input-with-icon">
+                <Lock size={16} className="input-icon" />
+                <input id="register-password" type="password" className="input-field input-field-icon" placeholder="Minimum 6 characters" value={password} onChange={(e) => setPassword(e.target.value)} required aria-required="true" />
+              </div>
             </div>
 
             <div className="input-group">
-              <label className="input-label" htmlFor="register-state">Your State</label>
-              <select
-                id="register-state"
-                className="input-field"
-                value={state}
-                onChange={(e) => setState(e.target.value)}
-              >
-                <option value="">Select your state (optional)</option>
-                {STATES.map(s => (
-                  <option key={s} value={s}>{s}</option>
-                ))}
-              </select>
+              <label className="input-label" htmlFor="register-state">Your State / UT</label>
+              <div className="input-with-icon">
+                <MapPin size={16} className="input-icon" />
+                <select id="register-state" className="input-field input-field-icon" value={state} onChange={(e) => setState(e.target.value)}>
+                  <option value="">Select your state (optional)</option>
+                  {STATES.map(s => <option key={s} value={s}>{s}</option>)}
+                </select>
+              </div>
             </div>
 
             <button type="submit" className="btn btn-primary btn-lg auth-submit" disabled={loading} id="register-submit">
-              {loading ? (
-                <span className="auth-spinner"></span>
-              ) : (
-                'Create Account'
-              )}
+              {loading ? <Loader2 size={20} className="spin" /> : 'Create Account'}
             </button>
           </form>
 
-          <div className="auth-divider">
-            <span>or</span>
-          </div>
+          <div className="auth-divider"><span>or</span></div>
 
           <button onClick={handleGoogle} className="btn btn-outline btn-lg auth-google" disabled={loading} id="register-google">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
               <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
               <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>

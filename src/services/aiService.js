@@ -1,70 +1,79 @@
-// Mock data for the Election AI assistant
-// This simulates responses that would come from Vertex AI / Gemini
+/**
+ * AI Service for ElectionIQ
+ * Indian Election Education Assistant
+ * Mock responses for development — ready for Google Gemini API integration via Cloud Functions
+ */
 
-const SYSTEM_PROMPT = `You are ElectionIQ, a non-partisan, educational AI assistant focused exclusively on explaining democratic election processes. You provide factual, accurate information about:
-- Voter registration procedures
-- Election timelines and deadlines
-- Voting methods (in-person, mail-in, early voting)
-- How votes are counted
-- Electoral systems and processes
-- Polling place information
-- Voter ID requirements
+export const SYSTEM_PROMPT = `You are ElectionIQ, a non-partisan, educational AI assistant focused exclusively on explaining the Indian democratic election process. You provide factual, accurate information about:
+- Indian voter registration (EPIC, Form 6, NVSP)
+- Election Commission of India (ECI) procedures
+- Electronic Voting Machines (EVMs) and VVPAT
+- Types of elections: Lok Sabha, Vidhan Sabha, Panchayat, Municipal
+- Constitutional provisions related to elections (Articles 324-329)
+- Model Code of Conduct (MCC)
+- NOTA (None of the Above)
+- Electoral rolls and voter lists
+- Polling procedures and voter rights
 
 You NEVER:
-- Express political opinions
-- Endorse any candidate or party
-- Make partisan statements
-- Discuss who to vote for
+- Express political opinions or preferences
+- Endorse or criticise any political party, leader, or candidate
+- Make partisan or biased statements
+- Predict election outcomes
+- Discuss religion, caste, or communal issues in an electoral context
 
-You always remain neutral, educational, and helpful.`;
+You always remain neutral, educational, factual, and helpful. You cite official ECI sources when relevant.`;
 
-// Pre-built responses for common questions (used when Gemini API is not connected)
 const MOCK_RESPONSES = {
   greeting: [
-    "Hello! 👋 I'm ElectionIQ, your friendly election education assistant. I'm here to help you understand the voting process, registration deadlines, and everything you need to know about participating in democracy. What would you like to learn about today?",
-    "Welcome to ElectionIQ! 🗳️ I can help you with voter registration, election timelines, voting procedures, and more. Ask me anything about the democratic process!",
+    "Namaste! I'm ElectionIQ, your AI-powered guide to understanding the Indian election process. I'm here to help you learn about voter registration, EVMs, election timelines, and your rights as a voter.\n\nFeel free to ask me anything about Indian elections, or try one of the suggested questions below!",
   ],
   registration: [
-    "Great question about voter registration! 📋\n\nHere's what you need to know:\n\n**General Requirements:**\n• You must be a U.S. citizen\n• You must be 18 years old by Election Day\n• You must meet your state's residency requirements\n\n**How to Register:**\n1. **Online:** Visit vote.gov to register online (available in most states)\n2. **By Mail:** Download and mail the National Voter Registration Form\n3. **In Person:** Visit your local election office or DMV\n\n**Deadlines vary by state** – most states require registration 15-30 days before an election. Some states offer same-day registration!\n\nWould you like to know the specific deadline for your state?",
+    "Great question about voter registration in India!\n\n**Eligibility:**\n• Must be an Indian citizen\n• Must be 18 years or older as on 1st January of the qualifying year\n• Must be a resident of the constituency\n\n**How to Register:**\n1. **Online:** Visit voters.eci.gov.in and fill Form 6\n2. **App:** Use the Voter Helpline App (available on Android & iOS)\n3. **Offline:** Submit Form 6 at your nearest Electoral Registration Office (ERO)\n\n**Documents Required:**\n• Proof of age (Aadhaar, Birth Certificate, Class 10 Marksheet)\n• Proof of address (Aadhaar, Utility Bill, Bank Passbook)\n• Passport-size photograph\n\n**After Registration:**\n• Track your application on NVSP portal\n• Once approved, collect your EPIC card or download e-EPIC\n• Verify your name in the electoral roll before every election\n\nWould you like to know more about any specific step?",
+  ],
+  evm: [
+    "India uses Electronic Voting Machines (EVMs) for elections — here's how they work:\n\n**EVM Components:**\n1. **Control Unit** — with the Presiding Officer at the polling booth\n2. **Ballot Unit** — inside the voting compartment for the voter\n\n**How to Vote on EVM:**\n• Find the candidate name and party symbol on the Ballot Unit\n• Press the blue button next to your chosen candidate\n• A light and beep confirm your vote has been recorded\n\n**VVPAT (Paper Audit Trail):**\n• A paper slip with candidate name and symbol is displayed for 7 seconds\n• Verify your vote on this slip\n• The slip drops into a sealed box for potential cross-verification\n\n**Security Features:**\n• EVMs are standalone — NOT connected to any network\n• One-time programmable chips — cannot be reprogrammed\n• Mock polls conducted before every election\n• Strong room storage with 24/7 CCTV and armed security\n• VVPAT slips from 5 random booths per constituency are cross-checked\n\nWould you like to learn about NOTA or election counting?",
   ],
   timeline: [
-    "Here's a typical election timeline: 📅\n\n**6-12 Months Before:**\n• Candidate filing deadlines\n• Primary election season begins\n\n**3-6 Months Before:**\n• Primary elections held\n• Party conventions\n\n**30 Days Before:**\n• Voter registration deadline (most states)\n• Mail-in ballot requests open\n\n**2 Weeks Before:**\n• Early voting begins (varies by state)\n• Mail-in ballots start arriving\n\n**Election Day:**\n• Polls typically open 6-7 AM, close 7-8 PM\n• Results begin coming in after polls close\n\n**After Election Day:**\n• Official canvassing and certification\n• Recounts if necessary\n\nWant me to explain any of these steps in more detail?",
+    "Here's how an Indian general election unfolds:\n\n**Phase 1 — Announcement:**\n• ECI announces election schedule and dates\n• Model Code of Conduct (MCC) comes into immediate effect\n• Existing government cannot make policy announcements\n\n**Phase 2 — Nominations:**\n• Candidates file nomination papers with the Returning Officer\n• Scrutiny of nominations by the RO\n• Last date for withdrawal of candidature\n\n**Phase 3 — Campaigning:**\n• Political rallies, door-to-door canvassing, media campaigns\n• Campaign must stop 48 hours before polling (silence period)\n• No liquor distribution, voter bribery, or communal appeals\n\n**Phase 4 — Polling Day:**\n• Voting on EVMs with VVPAT at assigned polling booths\n• Typically 7:00 AM to 6:00 PM (varies by region)\n• Public holiday declared\n\n**Phase 5 — Counting Day:**\n• Usually a few days after the last phase of polling\n• Postal ballots counted first, then EVM results\n• VVPAT cross-verification of 5 booths per constituency\n\n**Phase 6 — Results & Government Formation:**\n• Winners declared constituency by constituency\n• Party/coalition with 272+ Lok Sabha seats forms government\n• President invites majority leader to become Prime Minister\n\nShall I explain any phase in more detail?",
   ],
-  voting_methods: [
-    "There are several ways to cast your vote! 🗳️\n\n**1. In-Person Voting (Election Day)**\n• Go to your assigned polling place\n• Bring required ID (varies by state)\n• Cast your ballot privately\n\n**2. Early Voting**\n• Available in most states\n• Usually 1-2 weeks before Election Day\n• Same process as Election Day voting\n• Often at designated locations (not your regular polling place)\n\n**3. Mail-In / Absentee Voting**\n• Request a ballot from your local election office\n• Some states send ballots automatically\n• Fill out at home and mail it back or drop it off\n• Deadlines vary – check your state's rules!\n\n**4. Provisional Ballot**\n• Used when there's a question about eligibility\n• Your vote is set aside and verified later\n\nWhich method would you like to learn more about?",
+  nota: [
+    "NOTA — None of the Above — is an important option for Indian voters.\n\n**What is NOTA?**\n• A button on the EVM allowing voters to reject all candidates\n• Introduced after the Supreme Court ruling in September 2013 (PUCL v. Union of India)\n• Symbolised by a ballot paper with a cross mark\n\n**How to use NOTA:**\n• NOTA is the last option on the Ballot Unit of the EVM\n• Press the button next to the NOTA symbol to register your choice\n• Your vote is recorded and counted like any other vote\n\n**Important to Know:**\n• Even if NOTA receives the most votes, the candidate with the highest votes still wins\n• NOTA does NOT invalidate an election\n• It is a powerful way to express dissatisfaction with all candidates\n• Several states have seen NOTA votes in thousands\n\n**Why NOTA Matters:**\n• It provides a democratic way to register protest\n• It maintains vote secrecy — unlike boycotting the election\n• It pressures parties to field better candidates\n\nWould you like to learn about voter rights or election types?",
   ],
-  counting: [
-    "Great question about vote counting! 🔢\n\nThe process is designed to be transparent and secure:\n\n**1. Closing the Polls**\n• Election workers seal ballot boxes\n• Voting machines are shut down\n• All materials are secured\n\n**2. Counting Methods**\n• **Optical Scanners:** Paper ballots are fed through machines that read your marks\n• **Electronic Tabulation:** Digital voting machine results are compiled\n• **Hand Counting:** Some jurisdictions still count by hand\n\n**3. Verification**\n• Results are tallied at the precinct level\n• Transmitted to county election offices\n• Bipartisan observers monitor the process\n• Multiple verification checks are performed\n\n**4. Certification**\n• Provisional and absentee ballots are verified\n• Official results are certified days/weeks later\n• Recounts may occur in close races\n\nThe whole process has multiple safeguards to ensure accuracy!",
+  voter_id: [
+    "The EPIC (Elector Photo Identity Card) is your Voter ID in India.\n\n**What is EPIC?**\n• Issued by the Election Commission of India\n• Contains your name, photo, address, and unique EPIC number\n• Primary document for voter identification at polling booths\n\n**How to Get Your EPIC:**\n1. Fill Form 6 online at voters.eci.gov.in\n2. Upload your photograph, age proof, and address proof\n3. A Booth Level Officer (BLO) may visit for verification\n4. Once approved, collect your physical EPIC or download e-EPIC\n\n**e-EPIC (Digital Voter ID):**\n• Available as a downloadable PDF with QR code\n• Can be stored on your phone\n• Equally valid as the physical card for voting\n\n**Alternative IDs Accepted for Voting (12 documents):**\n• Aadhaar Card\n• Passport\n• Driving License\n• PAN Card\n• Service Identity Card (Government employees)\n• Bank/Post Office Passbook with photo\n• And 6 more documents approved by ECI\n\nNeed help checking your voter registration status?",
   ],
-  id_requirements: [
-    "Voter ID requirements vary significantly by state! 🪪\n\n**Strict Photo ID States:**\n• Must show government-issued photo ID\n• Examples: Driver's license, passport, military ID\n\n**Non-Strict Photo ID States:**\n• Photo ID requested but alternatives available\n• Can often sign an affidavit instead\n\n**Non-Photo ID States:**\n• Accept various forms of identification\n• Utility bills, bank statements, etc.\n\n**No ID Required States:**\n• Some states don't require any ID\n• You just state your name and address\n\n**Pro Tip:** Even if your state doesn't require ID, it's always a good idea to bring some form of identification to avoid any issues.\n\nWould you like to know the specific requirements for your state?",
+  types: [
+    "India conducts several types of elections:\n\n**1. Lok Sabha Elections (General Elections)**\n• Elects 543 Members of Parliament (MPs)\n• Uses First-Past-The-Post (FPTP) system\n• Conducted every 5 years unless dissolved earlier\n• 272+ seats needed for majority\n\n**2. Vidhan Sabha Elections (State Assembly)**\n• Elects Members of Legislative Assembly (MLAs)\n• Number of seats varies by state (e.g., UP: 403, Goa: 40)\n• Also uses FPTP system\n• Schedule varies by state\n\n**3. Rajya Sabha Elections**\n• Upper house of Parliament — 245 members\n• Not directly elected by the public\n• MLAs vote to elect Rajya Sabha members\n• Members serve 6-year terms, one-third retire every 2 years\n\n**4. Panchayat Elections (Rural)**\n• Three-tier system: Gram Panchayat, Block, District\n• Conducted by State Election Commissions\n• Reservation for SC/ST and women candidates\n\n**5. Municipal Elections (Urban)**\n• Municipal Corporations, Councils, and Nagar Panchayats\n• Also conducted by State Election Commissions\n\nWhich type would you like to learn more about?",
   ],
   default: [
-    "That's an interesting question! 🤔\n\nWhile I'd love to give you a detailed answer, let me share some helpful resources:\n\n• **vote.gov** - Official U.S. voting information\n• **ballotpedia.org** - Non-partisan election encyclopedia\n• **Your state's Secretary of State website** - State-specific rules\n\nYou can also ask me about:\n• 📋 Voter registration\n• 📅 Election timelines\n• 🗳️ Voting methods\n• 🔢 How votes are counted\n• 🪪 ID requirements\n\nWhat would you like to explore?",
+    "That's a great question! Let me point you to some helpful resources:\n\n**Official Resources:**\n• voters.eci.gov.in — National Voters' Service Portal\n• eci.gov.in — Election Commission of India\n• Voter Helpline App — Available on Android & iOS\n• Toll-free helpline: 1950\n\n**You can ask me about:**\n• Voter Registration (EPIC / Form 6)\n• How EVMs and VVPAT work\n• Election timeline and phases\n• Types of elections in India\n• NOTA and voter rights\n• Voter ID requirements\n• Model Code of Conduct\n\nWhat would you like to explore?",
   ]
 };
 
-// Simple keyword matching for mock responses
 function getTopicFromMessage(message) {
   const lower = message.toLowerCase();
   
-  if (lower.includes('hello') || lower.includes('hi') || lower.includes('hey') || lower.includes('start') || lower.includes('help')) {
+  if (lower.includes('hello') || lower.includes('hi') || lower.includes('hey') || lower.includes('namaste') || lower.includes('start') || lower.includes('help')) {
     return 'greeting';
   }
-  if (lower.includes('register') || lower.includes('registration') || lower.includes('sign up') || lower.includes('enroll')) {
+  if (lower.includes('register') || lower.includes('registration') || lower.includes('form 6') || lower.includes('nvsp') || lower.includes('enrol')) {
     return 'registration';
   }
-  if (lower.includes('timeline') || lower.includes('when') || lower.includes('date') || lower.includes('deadline') || lower.includes('schedule')) {
+  if (lower.includes('evm') || lower.includes('voting machine') || lower.includes('vvpat') || lower.includes('paper trail') || lower.includes('how to vote') || lower.includes('ballot unit')) {
+    return 'evm';
+  }
+  if (lower.includes('timeline') || lower.includes('when') || lower.includes('date') || lower.includes('schedule') || lower.includes('phase') || lower.includes('mcc') || lower.includes('model code')) {
     return 'timeline';
   }
-  if (lower.includes('how to vote') || lower.includes('mail') || lower.includes('absentee') || lower.includes('early voting') || lower.includes('in-person') || lower.includes('method')) {
-    return 'voting_methods';
+  if (lower.includes('nota') || lower.includes('none of the above') || lower.includes('reject')) {
+    return 'nota';
   }
-  if (lower.includes('count') || lower.includes('tally') || lower.includes('result') || lower.includes('how are votes')) {
-    return 'counting';
+  if (lower.includes('voter id') || lower.includes('epic') || lower.includes('id card') || lower.includes('e-epic') || lower.includes('identification') || lower.includes('aadhaar')) {
+    return 'voter_id';
   }
-  if (lower.includes('id') || lower.includes('identification') || lower.includes('photo') || lower.includes('document') || lower.includes('require')) {
-    return 'id_requirements';
+  if (lower.includes('lok sabha') || lower.includes('vidhan sabha') || lower.includes('rajya sabha') || lower.includes('type') || lower.includes('panchayat') || lower.includes('municipal') || lower.includes('assembly') || lower.includes('parliament')) {
+    return 'types';
   }
   return 'default';
 }
@@ -81,12 +90,10 @@ export async function getAIResponse(message) {
 }
 
 export const SUGGESTED_QUESTIONS = [
-  "How do I register to vote?",
-  "What's the election timeline?",
-  "What are the different ways to vote?",
-  "How are votes counted?",
+  "How do I register as a voter in India?",
+  "How does the EVM and VVPAT work?",
+  "What is NOTA?",
+  "What are the types of elections in India?",
+  "What is the election timeline?",
   "What ID do I need to vote?",
-  "When is the registration deadline?"
 ];
-
-export { SYSTEM_PROMPT };

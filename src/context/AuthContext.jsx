@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState } from 'react';
 
 const AuthContext = createContext(null);
 
@@ -6,9 +6,10 @@ const AuthContext = createContext(null);
 const MOCK_USER = {
   uid: 'mock-user-001',
   displayName: 'Demo User',
-  email: 'demo@electioniq.com',
+  email: 'demo@electioniq.in',
   photoURL: null,
-  state: 'California',
+  state: 'Maharashtra',
+  constituency: 'Mumbai North',
   checklistProgress: {},
   quizScores: [],
   badges: []
@@ -18,17 +19,14 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Mock login function
   const login = async (email, password) => {
     setLoading(true);
-    // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 800));
     setUser({ ...MOCK_USER, email });
     setLoading(false);
     return { ...MOCK_USER, email };
   };
 
-  // Mock Google login
   const loginWithGoogle = async () => {
     setLoading(true);
     await new Promise(resolve => setTimeout(resolve, 800));
@@ -37,7 +35,6 @@ export function AuthProvider({ children }) {
     return MOCK_USER;
   };
 
-  // Mock register
   const register = async (name, email, password) => {
     setLoading(true);
     await new Promise(resolve => setTimeout(resolve, 800));
@@ -47,12 +44,10 @@ export function AuthProvider({ children }) {
     return newUser;
   };
 
-  // Logout
   const logout = async () => {
     setUser(null);
   };
 
-  // Update user state (location)
   const updateUserState = (state) => {
     if (user) {
       setUser({ ...user, state });

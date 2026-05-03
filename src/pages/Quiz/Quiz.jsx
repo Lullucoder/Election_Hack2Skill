@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { QUIZ_QUESTIONS } from '../../data/mockData';
+import Icon from '../../components/Icons/IconResolver';
+import { ArrowRight, RotateCcw, Trophy, CheckCircle2, XCircle } from 'lucide-react';
 import './Quiz.css';
 
 export default function Quiz() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [quizCompleted, setQuizCompleted] = useState(false);
@@ -49,26 +50,25 @@ export default function Quiz() {
   const handleRestart = () => {
     setCurrentQuestion(0);
     setSelectedAnswer(null);
-    setShowResult(false);
     setScore(0);
     setAnswers([]);
     setQuizCompleted(false);
     setShowExplanation(false);
   };
 
-  const getScoreEmoji = () => {
+  const getScoreIcon = () => {
     const percentage = (score / totalQuestions) * 100;
-    if (percentage >= 90) return '🏆';
-    if (percentage >= 70) return '🌟';
-    if (percentage >= 50) return '👍';
-    return '📚';
+    if (percentage >= 90) return <Trophy size={48} color="#f59e0b" />;
+    if (percentage >= 70) return <Icon name="sparkles" size={48} color="#10b981" />;
+    if (percentage >= 50) return <Icon name="correct" size={48} color="#3b82f6" />;
+    return <Icon name="learn" size={48} color="#8b5cf6" />;
   };
 
   const getScoreMessage = () => {
     const percentage = (score / totalQuestions) * 100;
-    if (percentage >= 90) return "Outstanding! You're an Election Expert!";
-    if (percentage >= 70) return "Great job! You know your elections well!";
-    if (percentage >= 50) return "Good effort! Keep learning!";
+    if (percentage >= 90) return "Outstanding! You're an Indian Election Expert!";
+    if (percentage >= 70) return "Great job! You know the Indian electoral system well!";
+    if (percentage >= 50) return "Good effort! Keep learning about our democracy!";
     return "Keep studying! You'll get there!";
   };
 
@@ -81,7 +81,9 @@ export default function Quiz() {
 
         <div className="container-sm">
           <div className="quiz-results glass-card animate-fadeInUp">
-            <div className="results-emoji">{getScoreEmoji()}</div>
+            <div className="results-icon-container" style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
+              {getScoreIcon()}
+            </div>
             <h1 className="heading-2">Quiz Complete!</h1>
             <p className="results-message">{getScoreMessage()}</p>
 
@@ -106,7 +108,7 @@ export default function Quiz() {
 
             {percentage >= 80 && (
               <div className="results-badge animate-scaleIn">
-                <span>🏆</span>
+                <Trophy size={20} color="#f59e0b" />
                 <span>You earned the <strong>"Election Expert"</strong> badge!</span>
               </div>
             )}
@@ -116,14 +118,16 @@ export default function Quiz() {
               <h3>Answer Review</h3>
               {answers.map((answer, i) => (
                 <div key={i} className={`review-item ${answer.isCorrect ? 'review-correct' : 'review-wrong'}`}>
-                  <span className="review-icon">{answer.isCorrect ? '✅' : '❌'}</span>
+                  <span className="review-icon">
+                    {answer.isCorrect ? <CheckCircle2 size={18} color="#10b981" /> : <XCircle size={18} color="#ef4444" />}
+                  </span>
                   <span className="review-question">Q{i + 1}: {QUIZ_QUESTIONS[i].question}</span>
                 </div>
               ))}
             </div>
 
             <button onClick={handleRestart} className="btn btn-primary btn-lg" id="quiz-restart">
-              Try Again 🔄
+              <RotateCcw size={18} style={{ marginRight: '0.5rem' }} /> Try Again
             </button>
           </div>
         </div>
@@ -139,10 +143,12 @@ export default function Quiz() {
       <div className="container-sm">
         {/* Header */}
         <div className="quiz-header animate-fadeInUp">
-          <span className="badge badge-accent">🧠 Knowledge Quiz</span>
+          <span className="badge badge-accent">
+            <Icon name="quiz" size={14} /> Knowledge Quiz
+          </span>
           <h1 className="heading-2">Test Your Election Knowledge</h1>
           <p className="quiz-description">
-            Answer questions about the democratic process and earn the Election Expert badge!
+            Answer questions about the Indian democratic process and earn the Election Expert badge!
           </p>
         </div>
 
@@ -182,10 +188,10 @@ export default function Quiz() {
                   <span className="option-letter">{String.fromCharCode(65 + index)}</span>
                   <span className="option-text">{option}</span>
                   {showExplanation && index === question.correctAnswer && (
-                    <span className="option-check">✓</span>
+                    <CheckCircle2 size={20} className="option-check" color="#10b981" />
                   )}
                   {showExplanation && index === selectedAnswer && index !== question.correctAnswer && (
-                    <span className="option-check">✗</span>
+                    <XCircle size={20} className="option-check" color="#ef4444" />
                   )}
                 </button>
               );
@@ -196,9 +202,13 @@ export default function Quiz() {
             <div className="quiz-explanation animate-fadeIn">
               <div className="explanation-header">
                 {selectedAnswer === question.correctAnswer ? (
-                  <span className="explanation-status correct">✅ Correct!</span>
+                  <span className="explanation-status correct">
+                    <CheckCircle2 size={16} style={{ display: 'inline', marginRight: '4px', verticalAlign: 'text-bottom' }} /> Correct!
+                  </span>
                 ) : (
-                  <span className="explanation-status wrong">❌ Not quite!</span>
+                  <span className="explanation-status wrong">
+                    <XCircle size={16} style={{ display: 'inline', marginRight: '4px', verticalAlign: 'text-bottom' }} /> Not quite!
+                  </span>
                 )}
               </div>
               <p>{question.explanation}</p>
@@ -220,8 +230,13 @@ export default function Quiz() {
                 className="btn btn-primary btn-lg"
                 onClick={handleNext}
                 id="quiz-next"
+                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
               >
-                {currentQuestion < totalQuestions - 1 ? 'Next Question →' : 'See Results 🏆'}
+                {currentQuestion < totalQuestions - 1 ? (
+                  <>Next Question <ArrowRight size={18} /></>
+                ) : (
+                  <>See Results <Trophy size={18} /></>
+                )}
               </button>
             )}
           </div>
