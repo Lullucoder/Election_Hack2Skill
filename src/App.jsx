@@ -66,11 +66,15 @@ function AppRoutes() {
   );
 }
 
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
+
 function App() {
   return (
-    <AuthProvider>
-      <AppRoutes />
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }
 

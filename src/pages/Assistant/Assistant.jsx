@@ -51,7 +51,7 @@ export default function Assistant() {
         timestamp: new Date()
       };
       setMessages(prev => [...prev, aiMessage]);
-    } catch (error) {
+    } catch (err) {
       const errorMessage = {
         id: Date.now() + 1,
         role: 'assistant',

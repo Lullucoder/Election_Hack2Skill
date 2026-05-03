@@ -6,7 +6,7 @@ import Icon from '../Icons/IconResolver';
 import './Navbar.css';
 
 export default function Navbar() {
-  const { user, logout, isAuthenticated } = useAuth();
+  const { logout, isAuthenticated } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
@@ -17,6 +17,7 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/set-state-in-effect
   useEffect(() => { setMobileOpen(false); }, [location]);
 
   const navLinks = isAuthenticated
